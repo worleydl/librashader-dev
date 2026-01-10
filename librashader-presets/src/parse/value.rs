@@ -173,9 +173,12 @@ fn load_child_reference_strings(
         reference_depth += 1;
         // canonicalize current root
         apply_context(&mut reference_root, context);
+
+        /*
         let reference_root = reference_root
             .canonicalize()
             .map_err(|e| ParsePresetError::IOError(reference_root.to_path_buf(), e))?;
+        */
 
         // resolve all referenced paths against root
         // println!("Resolving {referenced_paths:?} against {reference_root:?}.");
@@ -184,9 +187,11 @@ fn load_child_reference_strings(
             let mut path = reference_root.join(path.clone());
             apply_context(&mut path, context);
 
+            /*
             let mut path = path
                 .canonicalize()
                 .map_err(|e| ParsePresetError::IOError(path.clone(), e))?;
+            */
             // println!("Opening {:?}", path);
             let mut reference_contents = String::new();
             File::open(&path)
@@ -224,9 +229,12 @@ pub(crate) fn parse_preset(
 
     apply_context(&mut path, &context);
 
+    /*
     let path = path
         .canonicalize()
         .map_err(|e| ParsePresetError::IOError(path.to_path_buf(), e))?;
+    */
+
 
     let mut contents = String::new();
     File::open(&path)
@@ -326,9 +334,11 @@ pub fn parse_values(
 
             let mut relative_path = path.to_path_buf();
             relative_path.push(*token.value.fragment());
+            /*
             relative_path
                 .canonicalize()
                 .map_err(|e| ParsePresetError::IOError(relative_path.clone(), e))?;
+            */
             values.push(Value::Shader(index, relative_path))
         }
     }
@@ -342,9 +352,11 @@ pub fn parse_values(
             let mut relative_path = path.to_path_buf();
             // Don't trim paths
             relative_path.push(*token.value.fragment());
+            /*
             relative_path
                 .canonicalize()
                 .map_err(|e| ParsePresetError::IOError(relative_path.clone(), e))?;
+            */
             textures.push((token.key, relative_path))
         }
     }
@@ -575,9 +587,11 @@ pub fn parse_values(
             let mut relative_path = path.to_path_buf();
             // Don't trim paths.
             relative_path.push(*token.value.fragment());
+            /*
             relative_path
                 .canonicalize()
                 .map_err(|e| ParsePresetError::IOError(relative_path.clone(), e))?;
+            */
             undeclared_textures.push((token.key, relative_path));
         }
 
